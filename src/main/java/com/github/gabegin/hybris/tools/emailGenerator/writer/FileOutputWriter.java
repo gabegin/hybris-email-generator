@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public record FileWriter(Path path) implements Writer {
+public record FileOutputWriter(Path path) implements OutputWriter {
     @Override
     @SneakyThrows
     public void write(final String content) {
