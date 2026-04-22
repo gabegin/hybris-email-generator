@@ -13,30 +13,30 @@ import java.util.Map;
 
 @Getter
 @Setter
-@Command(name = "Email Generator", version = "1.0.0")
+@Command(name = "Hybris Email Generator", version = "1.0.0")
 public class Configurator {
     @Option(
         names = { "-M", "--model-directory" },
-        description = "Default lookup directoy for models"
+        description = "Default lookup directory for models"
     )
     private Path modelDirectory;
 
     @Option(
         names = { "-R", "--resource-bundle-directory" },
-        description = "Default lookup directoy for resource bundles"
+        description = "Default lookup directory for resource bundles"
     )
     private Path resourceBundleDirectory;
 
     @Option(
         names = { "-O", "--output-directory" },
-        description = "Default directoy for outputting generated templates"
+        description = "Default directory for outputting generated templates"
     )
     private Path outputDirectory;
 
     @Option(
         names = { "-T", "--template-directory" },
         defaultValue = "${HYBRIS_BIN_DIR}/custom/TWC/TWCcore/resources/TWCcore/import/emails",
-        description = "Default lookup directoy for templates"
+        description = "Default lookup directory for templates"
     )
     private Path templateDirectory;
 
