@@ -41,7 +41,7 @@ public class Templates {
         final Object result = new Traverser(context).traverse(expression);
 
         if (result == null) {
-            return null;
+            return "";
         }
 
         return result.toString();
