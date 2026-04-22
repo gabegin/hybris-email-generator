@@ -17,7 +17,7 @@ public record Traverser(Object object) {
     }
 
     private Iterator<String> getBreadcrumbs(final String path) {
-        final String[] breadcrumbs = path.replaceAll("[\\d+]", ".$1").split("[./\\\\]");
+        final String[] breadcrumbs = path.replaceAll("\\[(\\d+)]", ".$1").split("[./\\\\]");
 
         return Arrays.stream(breadcrumbs).iterator();
     }
