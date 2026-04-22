@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Getter
@@ -20,9 +21,13 @@ public class ResourceBundle extends Properties {
             return message;
         }
 
-        return Pattern.compile("\\{(\\d+)}")
-            .matcher(message)
-            .replaceAll((match) -> this.replaceArgument(match, arguments));
+        final Matcher matcher = Pattern.compile("\\{(\\d+)}").matcher(message);
+
+        if (!matcher.matches()) {
+            return message;
+        }
+
+        return matcher.replaceAll((match) -> this.replaceArgument(match, arguments));
     }
 
     private String replaceArgument(final MatchResult match, final Object... arguments) {
