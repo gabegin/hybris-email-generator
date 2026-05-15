@@ -1,8 +1,5 @@
 package com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy;
 
-import com.google.auto.service.AutoService;
-
-@AutoService(AccessorStrategy.class)
 public class ArrayAccessorStrategy implements AccessorStrategy {
     @Override
     public Object get(final Object object, final Object attribute) {
