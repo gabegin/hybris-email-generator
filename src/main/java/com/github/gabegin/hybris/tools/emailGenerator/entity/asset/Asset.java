@@ -1,6 +1,5 @@
 package com.github.gabegin.hybris.tools.emailGenerator.entity.asset;
 
-import com.github.gabegin.hybris.tools.emailGenerator.watcher.PacketEvent;
 import org.apache.commons.io.FilenameUtils;
 
 import java.nio.file.Path;
@@ -26,17 +25,5 @@ public interface Asset {
         }
 
         return FilenameUtils.getBaseName(this.getFilename());
-    }
-
-    default void onCreate(final PacketEvent packetEvent) {
-        packetEvent.registerAsset();
-    }
-
-    default void onModify(final PacketEvent packetEvent) {
-        packetEvent.generateEmail();
-    }
-
-    default void onDelete(final PacketEvent packetEvent) {
-        packetEvent.unregisterAsset();
     }
 }

@@ -30,33 +30,12 @@ public class Templates {
             .collect(Collectors.joining());
     }
 
-    private static String replaceTemplatePart(final String templatePart, final Map<String, Object> context) {
-        final Matcher matcher = EXPRESSION_REGEX.matcher(templatePart);
-
-        if (!matcher.matches()) {
-            return unescapeTemplate(templatePart);
-        }
-
-        final String expression = matcher.group("expression");
-        final Object result = new Traverser(context).traverse(expression);
-
-        if (result == null) {
-            return "";
-        }
-
-        return result.toString();
-    }
-
-    private static String unescapeTemplate(final String expression) {
-        return expression.replaceAll("\\\\([{}\\\\])", "$1");
-    }
-
     private static Map<String, Object> createContext(final ModelMethod<?> modelMethod, final Object object, final Object... values) {
         final Map<String, Object> context = new HashMap<>();
         final Accessor accessor = new Accessor(object);
 
         context.putAll(modelMethod.getModel());
-        context.putAll(accessor.entries());
+        context.putAll(accessor.getEntries());
 
         putArgumentValues(context, modelMethod, values);
 
@@ -86,5 +65,26 @@ public class Templates {
             .toArray();
 
         context.put(function.getSpreader(), spreadValues);
+    }
+
+    private static String replaceTemplatePart(final String templatePart, final Map<String, Object> context) {
+        final Matcher matcher = EXPRESSION_REGEX.matcher(templatePart);
+
+        if (!matcher.matches()) {
+            return unescapeTemplate(templatePart);
+        }
+
+        final String expression = matcher.group("expression");
+        final Object result = new Traverser(context).traverse(expression);
+
+        if (result == null) {
+            return "";
+        }
+
+        return result.toString();
+    }
+
+    private static String unescapeTemplate(final String expression) {
+        return expression.replaceAll("\\\\([{}\\\\])", "$1");
     }
 }

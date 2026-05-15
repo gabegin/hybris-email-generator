@@ -21,18 +21,6 @@ public class CLI {
         new EmailGenerator(emails, configurator).generate();
     }
 
-    private static void showHelp(final Configurator configurator) {
-        final CommandLine commandLine = new CommandLine(configurator);
-
-        if (configurator.isHelp()) {
-            commandLine.usage(System.out);
-        } else {
-            commandLine.printVersionHelp(System.out);
-        }
-
-        System.exit(0);
-    }
-
     private static Configurator getConfiguration(final String[] arguments) {
         final Configurator configurator = new Configurator();
 
@@ -45,5 +33,17 @@ public class CLI {
         }
 
         return configurator;
+    }
+
+    private static void showHelp(final Configurator configurator) {
+        final CommandLine commandLine = new CommandLine(configurator);
+
+        if (configurator.isHelp()) {
+            commandLine.usage(System.out);
+        } else {
+            commandLine.printVersionHelp(System.out);
+        }
+
+        System.exit(0);
     }
 }

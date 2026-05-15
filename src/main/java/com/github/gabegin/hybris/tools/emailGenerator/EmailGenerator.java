@@ -13,7 +13,6 @@ import org.apache.velocity.context.Context;
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -23,6 +22,12 @@ public final class EmailGenerator {
 
     public void generate() {
         this.getEmails().forEach(this::generateEmail);
+    }
+
+    private OutputWriter createOutputWriter(final Path outputFile) {
+        final Path outputPath = this.getOutputPath(outputFile);
+
+        return new FileOutputWriter(outputPath);
     }
 
     private void generateEmail(final Email email) {
@@ -35,6 +40,16 @@ public final class EmailGenerator {
         this.createOutputWriter(email.getOutputFile()).write(stringWriter.toString());
     }
 
+    private Path getOutputPath(final Path outputFile) {
+        final Path outputDirectory = this.getConfigurator().getOutputDirectory();
+
+        if (outputFile.isAbsolute() || outputDirectory == null) {
+            return outputFile;
+        }
+
+        return outputDirectory.resolve(outputFile);
+    }
+
     private VelocityEngine initializeVelocityEngine(final Email email) {
         final VelocityEngine velocityEngine = new VelocityEngine();
 
@@ -45,21 +60,5 @@ public final class EmailGenerator {
         velocityEngine.init();
 
         return velocityEngine;
-    }
-
-    private OutputWriter createOutputWriter(final Path outputFile) {
-        final Path outputPath = this.getOutputPath(outputFile);
-
-        return new FileOutputWriter(outputPath);
-    }
-
-    private Path getOutputPath(final Path outputFile) {
-        final Path outputDirectory = this.getConfigurator().getOutputDirectory();
-
-        if (outputFile.isAbsolute() || outputDirectory == null) {
-            return outputFile;
-        }
-
-        return outputDirectory.resolve(outputFile);
     }
 }

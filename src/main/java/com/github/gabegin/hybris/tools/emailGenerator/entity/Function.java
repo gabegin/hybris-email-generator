@@ -13,14 +13,6 @@ public final class Function<T> {
     private final String spreader;
     private final T result;
 
-    public int getArity() {
-        return this.getArguments().size();
-    }
-
-    public boolean isSpread() {
-        return this.getSpreader() != null;
-    }
-
     public boolean accepts(final Object... arguments) {
         final int arity = this.getArity();
 
@@ -29,5 +21,13 @@ public final class Function<T> {
         }
 
         return arguments.length == arity;
+    }
+
+    public int getArity() {
+        return this.getArguments().size();
+    }
+
+    public boolean isSpread() {
+        return this.getSpreader() != null;
     }
 }

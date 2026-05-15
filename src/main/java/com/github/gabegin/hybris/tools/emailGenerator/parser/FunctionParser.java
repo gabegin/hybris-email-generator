@@ -53,14 +53,6 @@ public class FunctionParser {
         return new Function<>(name, conventionalArgumentNames, spreader, result);
     }
 
-    private static List<String> parseArgumentNames(final String rawArgumentNames) {
-        final String[] splitArgumentNames = rawArgumentNames.split(ARGUMENT_SEPARATOR);
-
-        return Arrays.stream(splitArgumentNames)
-            .map(FunctionParser::parseArgumentName)
-            .toList();
-    }
-
     private static String parseArgumentName(final String rawArgumentName) {
         final Matcher argumentNameMatcher = ARGUMENT_REGEX.matcher(rawArgumentName);
 
@@ -69,5 +61,13 @@ public class FunctionParser {
         }
 
         return argumentNameMatcher.group("name");
+    }
+
+    private static List<String> parseArgumentNames(final String rawArgumentNames) {
+        final String[] splitArgumentNames = rawArgumentNames.split(ARGUMENT_SEPARATOR);
+
+        return Arrays.stream(splitArgumentNames)
+            .map(FunctionParser::parseArgumentName)
+            .toList();
     }
 }
