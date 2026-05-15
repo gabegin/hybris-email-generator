@@ -1,8 +1,7 @@
 package com.github.gabegin.hybris.tools.emailGenerator.extension.instrospection;
 
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Function;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
-import com.github.gabegin.hybris.tools.emailGenerator.utility.Templates;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.velocity.context.Context;
@@ -33,17 +32,13 @@ public final class ModelMethod<T> implements VelMethod {
 
     @Override
     public Object invoke(final Object object, final Object... arguments) {
-        final T result = this.getFunction().getResult();
-
-        if (!(result instanceof final String template)) {
-            return result;
-        }
+        final Model model = this.getModel();
 
         if (object instanceof Context) {
-            return Templates.apply(template, this, this.getModel(), arguments);
+            return this.getFunction().execute(model, model, arguments);
         }
 
-        return Templates.apply(template, this, object, arguments);
+        return this.getFunction().execute(model, object, arguments);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.github.gabegin.hybris.tools.emailGenerator.parser;
 
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Function;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.function.Function;
 
 import java.util.Arrays;
 import java.util.Collections;
