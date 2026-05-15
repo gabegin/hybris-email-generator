@@ -1,0 +1,5 @@
+com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.ArrayAccessorStrategy
+com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.FieldAccessorStrategy
+com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.GetAccessorStrategy
+com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.GetterAccessorStrategy
+com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.MethodAccessorStrategy
