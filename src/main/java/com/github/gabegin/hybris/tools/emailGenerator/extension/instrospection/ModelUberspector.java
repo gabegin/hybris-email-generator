@@ -1,7 +1,7 @@
 package com.github.gabegin.hybris.tools.emailGenerator.extension.instrospection;
 
 import com.github.gabegin.hybris.tools.emailGenerator.entity.Function;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Model;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
 import com.github.gabegin.hybris.tools.emailGenerator.parser.FunctionParser;
 import com.github.gabegin.hybris.tools.emailGenerator.traversal.Accessor;
 import org.apache.velocity.util.introspection.Info;
@@ -31,10 +31,10 @@ public class ModelUberspector extends UberspectImpl {
     public Function<?> getFunction(final Object object, final String name, final Object[] arguments) {
         final Accessor accessor = new Accessor(object);
 
-        return accessor.keys().stream()
+        return accessor.getKeys().stream()
             .map((key) -> FunctionParser.parse(key, accessor.get(key)))
             .filter(Objects::nonNull)
-            .filter((function) -> function.name().equals(name) && function.accepts(arguments))
+            .filter((function) -> function.getName().equals(name) && function.accepts(arguments))
             .findFirst()
             .orElse(null);
     }

@@ -1,12 +1,13 @@
 package com.github.gabegin.hybris.tools.emailGenerator.loader;
 
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Asset;
 import com.github.gabegin.hybris.tools.emailGenerator.exception.UnknownEntityException;
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public interface EntityLoader<T> {
+public interface AssetLoader<T extends Asset> {
     Path getDirectory();
     String getExtension();
     String getName();
@@ -19,7 +20,7 @@ public interface EntityLoader<T> {
         final Path path = this.getPath();
 
         if (path == null || !path.toFile().exists()) {
-            return this.loadEmptyEntity();
+            return this.loadEmptyAsset();
         }
 
         final String content = Files.readString(path);
@@ -27,7 +28,7 @@ public interface EntityLoader<T> {
         return this.load(path, content);
     }
 
-    default T loadEmptyEntity() {
+    default T loadEmptyAsset() {
         throw new UnknownEntityException(this.getEntityName());
     }
 

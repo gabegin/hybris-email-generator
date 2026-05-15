@@ -1,20 +1,30 @@
 package com.github.gabegin.hybris.tools.emailGenerator.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.List;
 
-public record Function<T>(String name, List<String> arguments, String spreader, T result) {
-    public int arity() {
-        return this.arguments().size();
+@Getter
+@AllArgsConstructor
+public final class Function<T> {
+    private final String name;
+    private final List<String> arguments;
+    private final String spreader;
+    private final T result;
+
+    public int getArity() {
+        return this.getArguments().size();
     }
 
-    public boolean spread() {
-        return this.spreader() != null;
+    public boolean isSpread() {
+        return this.getSpreader() != null;
     }
 
     public boolean accepts(final Object... arguments) {
-        final int arity = this.arity();
+        final int arity = this.getArity();
 
-        if (this.spread()) {
+        if (this.isSpread()) {
             return arguments.length >= arity;
         }
 

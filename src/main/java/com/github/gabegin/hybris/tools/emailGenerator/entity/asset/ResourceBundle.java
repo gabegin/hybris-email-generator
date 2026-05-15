@@ -1,7 +1,8 @@
-package com.github.gabegin.hybris.tools.emailGenerator.entity;
+package com.github.gabegin.hybris.tools.emailGenerator.entity.asset;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.nio.file.Path;
 import java.util.Properties;
@@ -10,8 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class ResourceBundle extends Properties {
+public class ResourceBundle extends Properties implements Asset {
     private final Path path;
 
     public String getMessage(final String key, final Object... arguments) {

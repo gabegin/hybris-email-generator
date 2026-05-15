@@ -1,18 +1,25 @@
 package com.github.gabegin.hybris.tools.emailGenerator.loader;
 
 import com.github.gabegin.hybris.tools.emailGenerator.Configurator;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.ResourceBundle;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Template;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.ResourceBundle;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Template;
 import com.github.gabegin.hybris.tools.emailGenerator.utility.Sources;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.StringReader;
 import java.nio.file.Path;
 
-public record ResourceBundleLoader(Template template, Configurator configurator) implements EntityLoader<ResourceBundle> {
+@Getter
+@AllArgsConstructor
+public final class ResourceBundleLoader implements AssetLoader<ResourceBundle> {
+    private final Template template;
+    private final Configurator configurator;
+
     @Override
     public Path getDirectory() {
-        return this.configurator().getResourceBundleDirectory();
+        return this.getConfigurator().getResourceBundleDirectory();
     }
 
     @Override
@@ -22,7 +29,7 @@ public record ResourceBundleLoader(Template template, Configurator configurator)
 
     @Override
     public String getName() {
-        return this.configurator().getResourceBundle();
+        return this.getConfigurator().getResourceBundle();
     }
 
     @Override
@@ -42,22 +49,22 @@ public record ResourceBundleLoader(Template template, Configurator configurator)
     }
 
     @Override
-    public ResourceBundle loadEmptyEntity() {
+    public ResourceBundle loadEmptyAsset() {
         return new ResourceBundle(null);
     }
 
     @Override
     public String resolveEmptyName() {
         final String messageSource = Sources.resolve(
-            this.template().path(),
-            this.template().getSource("messageSource"),
-            this.configurator().getLanguage()
+            this.getTemplate().getPath(),
+            this.getTemplate().getSource("messageSource"),
+            this.getConfigurator().getLanguage()
         );
 
         if (messageSource != null) {
             return messageSource;
         }
 
-        return this.template().getName();
+        return this.getTemplate().getName();
     }
 }

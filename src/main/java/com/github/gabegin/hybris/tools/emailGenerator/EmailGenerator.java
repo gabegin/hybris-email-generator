@@ -5,34 +5,42 @@ import com.github.gabegin.hybris.tools.emailGenerator.extension.instrospection.M
 import com.github.gabegin.hybris.tools.emailGenerator.factory.ContextFactory;
 import com.github.gabegin.hybris.tools.emailGenerator.writer.FileOutputWriter;
 import com.github.gabegin.hybris.tools.emailGenerator.writer.OutputWriter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
-public record EmailGenerator(List<Email> emails, Configurator configurator) {
+@Getter
+@AllArgsConstructor
+public final class EmailGenerator {
+    private final List<Email> emails;
+    private final Configurator configurator;
+
     public void generate() {
-        this.emails().forEach(this::generateEmail);
+        this.getEmails().forEach(this::generateEmail);
     }
 
     private void generateEmail(final Email email) {
         final VelocityEngine velocityEngine = this.initializeVelocityEngine(email);
-        final Context context = ContextFactory.create(email.model(), email.resourceBundle());
+        final Context context = ContextFactory.create(email.getModel(), email.getResourceBundle());
         final StringWriter stringWriter = new StringWriter();
 
-        velocityEngine.evaluate(context, stringWriter, email.template().getFilename(), email.template().content());
+        velocityEngine.evaluate(context, stringWriter, email.getTemplate().getFilename(), email.getTemplate().getContent());
 
-        this.createOutputWriter(email.outputFile()).write(stringWriter.toString());
+        this.createOutputWriter(email.getOutputFile()).write(stringWriter.toString());
     }
 
     private VelocityEngine initializeVelocityEngine(final Email email) {
         final VelocityEngine velocityEngine = new VelocityEngine();
 
         velocityEngine.setProperty("introspector.uberspect.class", ModelUberspector.class.getName());
-        velocityEngine.setProperty("introspector.uberspect.model", email.model());
-        velocityEngine.setProperty("resource.loader.file.path", email.template().path().getParent().toString());
+        velocityEngine.setProperty("introspector.uberspect.model", email.getModel());
+        velocityEngine.setProperty("resource.loader.file.path", email.getTemplate().getPath().getParent().toString());
 
         velocityEngine.init();
 
@@ -46,7 +54,7 @@ public record EmailGenerator(List<Email> emails, Configurator configurator) {
     }
 
     private Path getOutputPath(final Path outputFile) {
-        final Path outputDirectory = this.configurator().getOutputDirectory();
+        final Path outputDirectory = this.getConfigurator().getOutputDirectory();
 
         if (outputFile.isAbsolute() || outputDirectory == null) {
             return outputFile;

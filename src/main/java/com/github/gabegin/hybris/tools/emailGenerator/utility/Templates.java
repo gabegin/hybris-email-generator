@@ -55,20 +55,20 @@ public class Templates {
         final Map<String, Object> context = new HashMap<>();
         final Accessor accessor = new Accessor(object);
 
-        context.putAll(modelMethod.model());
+        context.putAll(modelMethod.getModel());
         context.putAll(accessor.entries());
 
         putArgumentValues(context, modelMethod, values);
 
         context.put("@", object);
-        context.put("$", modelMethod.model());
+        context.put("$", modelMethod.getModel());
 
         return context;
     }
 
     private static void putArgumentValues(final Map<String, Object> context, final ModelMethod<?> modelMethod, final Object... values) {
-        final Function<?> function = modelMethod.function();
-        final List<String> arguments = function.arguments();
+        final Function<?> function = modelMethod.getFunction();
+        final List<String> arguments = function.getArguments();
 
         for (int index = 0; index < arguments.size(); index++) {
             final String argument = arguments.get(index);
@@ -77,14 +77,14 @@ public class Templates {
             context.put(argument, value);
         }
 
-        if (!function.spread()) {
+        if (!function.isSpread()) {
             return;
         }
 
         final Object[] spreadValues = Arrays.stream(values)
-            .skip(function.arity())
+            .skip(function.getArity())
             .toArray();
 
-        context.put(function.spreader(), spreadValues);
+        context.put(function.getSpreader(), spreadValues);
     }
 }
