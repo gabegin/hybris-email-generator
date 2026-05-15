@@ -2,14 +2,12 @@ package com.github.gabegin.hybris.tools.emailGenerator.entity.asset;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public final class Template implements Asset {
     private final Path path;
