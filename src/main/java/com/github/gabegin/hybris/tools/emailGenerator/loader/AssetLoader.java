@@ -9,8 +9,11 @@ import java.nio.file.Path;
 
 public interface AssetLoader<T extends Asset> {
     Path getDirectory();
+
     String getExtension();
+
     String getName();
+
     Class<T> getType();
 
     T load(final Path path, final String content);
@@ -36,6 +39,26 @@ public interface AssetLoader<T extends Asset> {
         throw new UnknownEntityException(this.getEntityName());
     }
 
+    private String getEntityName() {
+        return this.getType().getSimpleName();
+    }
+
+    private String getFilename() {
+        final String name = this.resolveName();
+
+        if (name == null) {
+            return null;
+        }
+
+        final String extension = this.getExtension();
+
+        if (name.endsWith(extension)) {
+            return name;
+        }
+
+        return name + extension;
+    }
+
     private Path getPath() {
         final String filename = this.getFilename();
 
@@ -58,22 +81,6 @@ public interface AssetLoader<T extends Asset> {
         return Path.of("").resolve(path);
     }
 
-    private String getFilename() {
-        final String name = this.resolveName();
-
-        if (name == null) {
-            return null;
-        }
-
-        final String extension = this.getExtension();
-
-        if (name.endsWith(extension)) {
-            return name;
-        }
-
-        return name + extension;
-    }
-
     private String resolveName() {
         final String name = this.getName();
 
@@ -82,9 +89,5 @@ public interface AssetLoader<T extends Asset> {
         }
 
         return this.resolveEmptyName();
-    }
-
-    private String getEntityName() {
-        return this.getType().getSimpleName();
     }
 }

@@ -28,7 +28,7 @@ public class ModelUberspector extends UberspectImpl {
         return new ModelMethod<>(function, this.getModel());
     }
 
-    public Function<?> getFunction(final Object object, final String name, final Object[] arguments) {
+    private Function<?> getFunction(final Object object, final String name, final Object[] arguments) {
         final Accessor accessor = new Accessor(object);
 
         return accessor.getKeys().stream()

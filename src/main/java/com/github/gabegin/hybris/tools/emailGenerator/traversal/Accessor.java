@@ -23,7 +23,7 @@ public final class Accessor {
         return tryWith(AccessorStrategy.class).get(this.getObject(), attribute);
     }
 
-    public Map<String, Object> entries() {
+    public Map<String, Object> getEntries() {
         final List<String> keys = this.getKeys();
 
         return keys.stream().collect(Collectors.toMap(Function.identity(), this::get));
