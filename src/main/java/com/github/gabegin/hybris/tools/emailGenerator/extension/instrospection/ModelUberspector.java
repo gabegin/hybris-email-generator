@@ -1,7 +1,7 @@
 package com.github.gabegin.hybris.tools.emailGenerator.extension.instrospection;
 
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Function;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.function.Function;
 import com.github.gabegin.hybris.tools.emailGenerator.parser.FunctionParser;
 import com.github.gabegin.hybris.tools.emailGenerator.traversal.Accessor;
 import org.apache.velocity.util.introspection.Info;
