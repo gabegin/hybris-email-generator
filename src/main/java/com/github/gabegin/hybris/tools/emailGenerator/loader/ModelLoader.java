@@ -1,20 +1,27 @@
 package com.github.gabegin.hybris.tools.emailGenerator.loader;
 
 import com.github.gabegin.hybris.tools.emailGenerator.Configurator;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Model;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Template;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Template;
 import com.github.gabegin.hybris.tools.emailGenerator.utility.Sources;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public record ModelLoader(Template template, Configurator configurator) implements EntityLoader<Model> {
+@Getter
+@AllArgsConstructor
+public final class ModelLoader implements AssetLoader<Model> {
+    private final Template template;
+    private final Configurator configurator;
+
     @Override
     public Path getDirectory() {
-        return this.configurator().getModelDirectory();
+        return this.getConfigurator().getModelDirectory();
     }
 
     @Override
@@ -24,7 +31,7 @@ public record ModelLoader(Template template, Configurator configurator) implemen
 
     @Override
     public String getName() {
-        return this.configurator().getModel();
+        return this.getConfigurator().getModel();
     }
 
     @Override
@@ -40,22 +47,22 @@ public record ModelLoader(Template template, Configurator configurator) implemen
     }
 
     @Override
-    public Model loadEmptyEntity() {
+    public Model loadEmptyAsset() {
         return new Model(null, new HashMap<>());
     }
 
     @Override
     public String resolveEmptyName() {
         final String modelSource = Sources.resolve(
-            this.template().path(),
-            this.template().getSource("modelSource"),
-            this.configurator().getLanguage()
+            this.getTemplate().getPath(),
+            this.getTemplate().getSource("modelSource"),
+            this.getConfigurator().getLanguage()
         );
 
         if (modelSource != null) {
             return modelSource;
         }
 
-        return this.template().getName();
+        return this.getTemplate().getName();
     }
 }

@@ -1,7 +1,7 @@
 package com.github.gabegin.hybris.tools.emailGenerator.factory;
 
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Model;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.ResourceBundle;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.ResourceBundle;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 

@@ -1,24 +1,26 @@
 package com.github.gabegin.hybris.tools.emailGenerator.loader;
 
 import com.github.gabegin.hybris.tools.emailGenerator.Configurator;
-import com.github.gabegin.hybris.tools.emailGenerator.entity.Template;
+import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Template;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.nio.file.Path;
 
-public record TemplateLoader(String name, Configurator configurator) implements EntityLoader<Template> {
+@Getter
+@AllArgsConstructor
+public final class TemplateLoader implements AssetLoader<Template> {
+    private final String name;
+    private final Configurator configurator;
+
     @Override
     public Path getDirectory() {
-        return this.configurator().getTemplateDirectory();
+        return this.getConfigurator().getTemplateDirectory();
     }
 
     @Override
     public String getExtension() {
         return ".vm";
-    }
-
-    @Override
-    public String getName() {
-        return this.name();
     }
 
     @Override

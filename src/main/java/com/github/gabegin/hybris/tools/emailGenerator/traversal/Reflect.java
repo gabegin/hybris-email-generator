@@ -2,6 +2,8 @@ package com.github.gabegin.hybris.tools.emailGenerator.traversal;
 
 import com.github.gabegin.hybris.tools.emailGenerator.traversal.safe.SafeField;
 import com.github.gabegin.hybris.tools.emailGenerator.traversal.safe.SafeMethod;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -10,33 +12,37 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public record Reflect(Object object) {
+@Getter
+@AllArgsConstructor
+public final class Reflect {
+    private final Object object;
+
     public Optional<SafeField> findField(final String name) {
-        final Field[] fields = this.object().getClass().getFields();
+        final Field[] fields = this.getObject().getClass().getFields();
 
         return Arrays.stream(fields)
             .filter((field) -> field.getName().equals(name))
             .findFirst()
-            .map((field) -> new SafeField(field, this.object()));
+            .map((field) -> new SafeField(field, this.getObject()));
     }
 
     public Optional<SafeMethod> findMethod(final String name, final Class<?>... parameterTypes) {
-        final Method[] methods = this.object().getClass().getMethods();
+        final Method[] methods = this.getObject().getClass().getMethods();
 
         return Arrays.stream(methods)
             .filter((method) -> method.getName().equals(name))
             .filter((method) -> this.hasAssignableParameters(method, parameterTypes))
             .findFirst()
-            .map((method) -> new SafeMethod(method, this.object()));
+            .map((method) -> new SafeMethod(method, this.getObject()));
     }
 
     public Optional<SafeMethod> findMethodByName(final String name, final String... prefixes) {
-        final Method[] methods = this.object().getClass().getMethods();
+        final Method[] methods = this.getObject().getClass().getMethods();
 
         return Arrays.stream(methods)
             .filter((method) -> this.hasName(method, name, prefixes))
             .findFirst()
-            .map((method) -> new SafeMethod(method, this.object()));
+            .map((method) -> new SafeMethod(method, this.getObject()));
     }
 
     private boolean hasAssignableParameters(final Method method, final Class<?>[] compareTypes) {

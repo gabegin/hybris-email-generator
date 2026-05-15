@@ -1,13 +1,20 @@
 package com.github.gabegin.hybris.tools.emailGenerator.traversal;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
-public record Traverser(Object object) {
+@Getter
+@AllArgsConstructor
+public final class Traverser {
+    private final Object object;
+
     public Object traverse(final String path) {
         final Iterator<String> breadcrumbs = this.getBreadcrumbs(path);
 
-        Object result = this.object();
+        Object result = this.getObject();
 
         while (breadcrumbs.hasNext() && result != null) {
             result = new Accessor(result).get(breadcrumbs.next());

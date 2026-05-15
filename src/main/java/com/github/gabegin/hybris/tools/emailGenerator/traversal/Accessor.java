@@ -2,6 +2,8 @@ package com.github.gabegin.hybris.tools.emailGenerator.traversal;
 
 import com.github.gabegin.hybris.tools.emailGenerator.traversal.strategy.AccessorStrategy;
 import com.github.gabegin.hybris.tools.emailGenerator.utility.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,25 +14,29 @@ import java.util.stream.Collectors;
 
 import static com.github.gabegin.hybris.tools.emailGenerator.utility.Strategies.tryWith;
 
-public record Accessor(Object object) {
+@Getter
+@AllArgsConstructor
+public final class Accessor {
+    private final Object object;
+
     public Object get(final Object attribute) {
-        return tryWith(AccessorStrategy.class).get(this.object(), attribute);
+        return tryWith(AccessorStrategy.class).get(this.getObject(), attribute);
     }
 
     public Map<String, Object> entries() {
-        final List<String> keys = this.keys();
+        final List<String> keys = this.getKeys();
 
         return keys.stream().collect(Collectors.toMap(Function.identity(), this::get));
     }
 
-    public List<String> keys() {
+    public List<String> getKeys() {
         return Optional
-            .ofNullable(this.getKeys())
+            .ofNullable(this.tryGetKeys())
             .map(Objects::asList)
             .orElseGet(Collections::emptyList);
     }
 
-    private Object getKeys() {
+    private Object tryGetKeys() {
         final Object keys = this.get("keys");
 
         if (keys != null) {
