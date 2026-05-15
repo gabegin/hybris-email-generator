@@ -41,8 +41,7 @@ public final class ModelLoader implements AssetLoader<Model> {
 
     @Override
     public Model load(final Path path, final String content) {
-        final Map<String, Object> attributes = new Gson().fromJson(content, new TypeToken<>() {
-        }.getType());
+        final Map<String, Object> attributes = new Gson().fromJson(content, new TypeToken<>() {}.getType());
 
         return new Model(path, attributes);
     }
