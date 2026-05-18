@@ -1,6 +1,6 @@
 package com.github.gabegin.hybris.tools.emailGenerator.loader;
 
-import com.github.gabegin.hybris.tools.emailGenerator.Configurator;
+import com.github.gabegin.hybris.tools.emailGenerator.Configuration;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Template;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,11 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public final class TemplateLoader implements AssetLoader<Template> {
     private final String name;
-    private final Configurator configurator;
+
+    @Override
+    public Template create(final Path path, final String content) {
+        return new Template(path, content);
+    }
 
     @Override
     public Path getDirectory() {
@@ -26,10 +30,5 @@ public final class TemplateLoader implements AssetLoader<Template> {
     @Override
     public Class<Template> getType() {
         return Template.class;
-    }
-
-    @Override
-    public Template load(final Path path, final String content) {
-        return new Template(path, content);
     }
 }
