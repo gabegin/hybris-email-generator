@@ -3,42 +3,28 @@ package com.github.gabegin.hybris.tools.emailGenerator;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.Email;
 import com.github.gabegin.hybris.tools.emailGenerator.factory.EmailFactory;
 import picocli.CommandLine;
-import picocli.CommandLine.ParameterException;
 
 import java.util.List;
 
 public class CLI {
     public static void main(final String[] arguments) {
-        final Configurator configurator = getConfiguration(arguments);
+        final Configuration configuration = Configuration.initialize(arguments);
 
-        if (configurator.isHelp() || configurator.isVersion()) {
-            showHelp(configurator);
+        if (configuration.isHelp() || configuration.isVersion()) {
+            showHelp();
         }
 
-        final EmailFactory emailFactory = new EmailFactory(configurator);
+        final EmailFactory emailFactory = new EmailFactory();
         final List<Email> emails = emailFactory.createEmails();
 
-        new EmailGenerator(emails, configurator).generate();
+        new EmailGenerator(emails).generate();
     }
 
-    private static Configurator getConfiguration(final String[] arguments) {
-        final Configurator configurator = new Configurator();
+    private static void showHelp() {
+        final Configuration configuration = Configuration.get();
+        final CommandLine commandLine = new CommandLine(configuration);
 
-        try {
-            CommandLine.populateCommand(configurator, arguments);
-        } catch (final ParameterException exception) {
-            System.err.println(exception.getMessage());
-            CommandLine.usage(configurator, System.err);
-            System.exit(1);
-        }
-
-        return configurator;
-    }
-
-    private static void showHelp(final Configurator configurator) {
-        final CommandLine commandLine = new CommandLine(configurator);
-
-        if (configurator.isHelp()) {
+        if (configuration.isHelp()) {
             commandLine.usage(System.out);
         } else {
             commandLine.printVersionHelp(System.out);

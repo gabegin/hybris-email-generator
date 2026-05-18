@@ -19,7 +19,7 @@ public final class ResourceBundleLoader implements AssetLoader<ResourceBundle> {
 
     @Override
     public Path getDirectory() {
-        return this.getConfigurator().getResourceBundleDirectory();
+        return Configuration.get().getResourceBundleDirectory();
     }
 
     @Override
@@ -29,7 +29,7 @@ public final class ResourceBundleLoader implements AssetLoader<ResourceBundle> {
 
     @Override
     public String getName() {
-        return this.getConfigurator().getResourceBundle();
+        return Configuration.get().getResourceBundle();
     }
 
     @Override

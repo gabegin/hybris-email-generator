@@ -3,6 +3,7 @@ package com.github.gabegin.hybris.tools.emailGenerator;
 import com.github.gabegin.hybris.tools.emailGenerator.extension.typeConverter.LanguageConverter;
 import lombok.Getter;
 import lombok.Setter;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -14,7 +15,9 @@ import java.util.Map;
 @Getter
 @Setter
 @Command(name = "Hybris Email Generator", version = "1.0.0")
-public class Configurator {
+public class Configuration {
+    private static Configuration INSTANCE;
+
     @Option(
         names = { "-M", "--model-directory" },
         description = "Default lookup directory for models"
@@ -42,7 +45,8 @@ public class Configurator {
 
     @Option(
         names = { "-m", "--model" },
-        description = "Path to model file used for all templates"
+        description = "Path to model file used for all templates",
+        paramLabel = "<model>.json"
     )
     private String model;
 
@@ -56,7 +60,7 @@ public class Configurator {
     @Option(
         names = { "-r", "--resource-bundle" },
         description = "Path to message bundle file used for all templates",
-        paramLabel = "<messageBundle>.properties"
+        paramLabel = "<resourceBundle>.properties"
     )
     private String resourceBundle;
 
@@ -80,4 +84,22 @@ public class Configurator {
         paramLabel = "<templateName>=<outputFile>"
     )
     private Map<String, Path> templatePairs;
+
+    public static Configuration get() {
+        return INSTANCE;
+    }
+
+    public static Configuration initialize(final String... arguments) {
+        INSTANCE = new Configuration();
+
+        try {
+            CommandLine.populateCommand(INSTANCE, arguments);
+        } catch (final CommandLine.ParameterException exception) {
+            System.err.println(exception.getMessage());
+            CommandLine.usage(INSTANCE, System.err);
+            System.exit(1);
+        }
+
+        return INSTANCE;
+    }
 }

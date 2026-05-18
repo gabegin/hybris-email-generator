@@ -15,7 +15,7 @@ public final class TemplateLoader implements AssetLoader<Template> {
 
     @Override
     public Path getDirectory() {
-        return this.getConfigurator().getTemplateDirectory();
+        return Configuration.get().getTemplateDirectory();
     }
 
     @Override

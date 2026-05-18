@@ -21,7 +21,7 @@ public final class ModelLoader implements AssetLoader<Model> {
 
     @Override
     public Path getDirectory() {
-        return this.getConfigurator().getModelDirectory();
+        return Configuration.get().getModelDirectory();
     }
 
     @Override
@@ -31,7 +31,7 @@ public final class ModelLoader implements AssetLoader<Model> {
 
     @Override
     public String getName() {
-        return this.getConfigurator().getModel();
+        return Configuration.get().getModel();
     }
 
     @Override
