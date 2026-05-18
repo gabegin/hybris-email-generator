@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public interface AssetLoader<T extends Asset> {
+    T create(final Path path, final String content);
+
     Path getDirectory();
 
     String getExtension();
@@ -16,26 +18,24 @@ public interface AssetLoader<T extends Asset> {
 
     Class<T> getType();
 
-    T load(final Path path, final String content);
+    default T createEmptyAsset() {
+        throw new UnknownEntityException(this.getEntityName());
+    }
 
     @SneakyThrows
     default T load() {
         final Path path = this.getPath();
 
         if (path == null || !path.toFile().exists()) {
-            return this.loadEmptyAsset();
+            return this.createEmptyAsset();
         }
 
         final String content = Files.readString(path);
 
-        return this.load(path, content);
+        return this.create(path, content);
     }
 
-    default T loadEmptyAsset() {
-        throw new UnknownEntityException(this.getEntityName());
-    }
-
-    default String resolveEmptyName() {
+    default String resolveMissingName() {
         throw new UnknownEntityException(this.getEntityName());
     }
 
@@ -78,7 +78,7 @@ public interface AssetLoader<T extends Asset> {
             return directory.resolve(path);
         }
 
-        return Path.of("").resolve(path);
+        return path;
     }
 
     private String resolveName() {
@@ -88,6 +88,6 @@ public interface AssetLoader<T extends Asset> {
             return name;
         }
 
-        return this.resolveEmptyName();
+        return this.resolveMissingName();
     }
 }

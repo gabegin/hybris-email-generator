@@ -18,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public final class EmailGenerator {
     private final List<Email> emails;
-    private final Configurator configurator;
 
     public void generate() {
         this.getEmails().forEach(this::generateEmail);
@@ -41,7 +40,7 @@ public final class EmailGenerator {
     }
 
     private Path getOutputPath(final Path outputFile) {
-        final Path outputDirectory = this.getConfigurator().getOutputDirectory();
+        final Path outputDirectory = Configuration.get().getOutputDirectory();
 
         if (outputFile.isAbsolute() || outputDirectory == null) {
             return outputFile;

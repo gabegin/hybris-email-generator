@@ -1,6 +1,6 @@
 package com.github.gabegin.hybris.tools.emailGenerator.factory;
 
-import com.github.gabegin.hybris.tools.emailGenerator.Configurator;
+import com.github.gabegin.hybris.tools.emailGenerator.Configuration;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.Email;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.Model;
 import com.github.gabegin.hybris.tools.emailGenerator.entity.asset.ResourceBundle;
@@ -17,23 +17,16 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public final class EmailFactory {
-    private final Configurator configurator;
-
     public List<Email> createEmails() {
-        return this.getConfigurator().getTemplatePairs().entrySet().stream()
+        return Configuration.get().getTemplatePairs().entrySet().stream()
             .map((entry) -> this.createEmail(entry.getKey(), entry.getValue()))
             .toList();
     }
 
     private Email createEmail(final String name, final Path outputFile) {
-        final TemplateLoader templateLoader = new TemplateLoader(name, this.getConfigurator());
-        final Template template = templateLoader.load();
-
-        final ModelLoader modelLoader = new ModelLoader(template, getConfigurator());
-        final Model model = modelLoader.load();
-
-        final ResourceBundleLoader resourceBundleLoader = new ResourceBundleLoader(template, getConfigurator());
-        final ResourceBundle resourceBundle = resourceBundleLoader.load();
+        final Template template = new TemplateLoader(name).load();
+        final Model model = new ModelLoader(template).load();
+        final ResourceBundle resourceBundle = new ResourceBundleLoader(template).load();
 
         return new Email(template, model, resourceBundle, outputFile);
     }
